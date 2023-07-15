@@ -19,7 +19,7 @@ router.post("/webhook", async (ctx) => {
       },
     });
 
-    console.log("result", result);
+    console.log(result.type, await result.value);
   } else {
     console.log("no body");
   }
