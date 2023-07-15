@@ -9,19 +9,19 @@ router.get("/", (ctx) => {
 
 router.post("/webhook", async (ctx) => {
   console.log("POST to /webhook", ctx.request.headers);
-  const body = ctx.request.body();
 
-  if (body.type === "form-data") {
-    const value = body.value;
-    const formData = await value.read();
-
-    console.log("reading FormData", formData);
-
-    formData?.files?.forEach((file) => {
-      console.log(file.filename, file.contentType);
+  if (ctx.request.hasBody) {
+    const result = await ctx.request.body({
+      contentTypes: {
+        json: ["application/json"],
+        form: ["multipart", "urlencoded"],
+        text: ["text"],
+      },
     });
+
+    console.log("result", result);
   } else {
-    console.log("body type is not form data", body.type);
+    console.log("no body");
   }
 
   ctx.response.body = { message: "OK" };
