@@ -12,14 +12,12 @@ router.post("/webhook", async (ctx) => {
 
   if (ctx.request.hasBody) {
     const result = await ctx.request.body({
-      contentTypes: {
-        json: ["application/json"],
-        form: ["multipart", "urlencoded"],
-        text: ["text"],
-      },
+      type: "form-data",
     });
 
-    console.log(result.type, await result.value);
+    const value = await result.value.read();
+
+    console.log({ value });
   } else {
     console.log("no body");
   }
